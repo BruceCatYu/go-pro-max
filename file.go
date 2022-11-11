@@ -1,6 +1,7 @@
 package gopromax
 
 import (
+	"errors"
 	"io"
 	"os"
 )
@@ -50,6 +51,10 @@ func ReadTailN(f *os.File, n int64) *FileTailLine {
 	}
 
 	fSize := stat.Size()
+	if fSize <= 0 {
+		res.Err = errors.New("empty file")
+		return res
+	}
 
 	for {
 		cursor -= 1
