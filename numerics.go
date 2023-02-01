@@ -29,3 +29,7 @@ func ClapNumber[T NumericType](n, left, right T) T {
 		return n
 	}
 }
+
+func NumericAdd[T NumericType](a, b T) T {
+	return a + b
+}
