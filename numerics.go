@@ -33,3 +33,7 @@ func ClapNumber[T NumericType](n, left, right T) T {
 func NumericAdd[T NumericType](a, b T) T {
 	return a + b
 }
+
+func NumericMinus[T NumericType](a, b T) T {
+	return a - b
+}
