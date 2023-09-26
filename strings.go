@@ -13,7 +13,7 @@ import (
 	"golang.org/x/text/transform"
 )
 
-// Parse string to local time
+// ParseLocalTime Parse string to local time
 func ParseLocalTime(s string) (t time.Time) {
 	t, _ = time.ParseInLocation(time.RFC3339, s, time.Local)
 	return

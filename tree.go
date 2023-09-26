@@ -1,64 +1,55 @@
 package gopromax
 
-type OrderableFunc[T any] func(a, b T) int
+import "cmp"
 
-type Tree[T any] struct {
-	f    OrderableFunc[T]
+type Tree[T cmp.Ordered] struct {
+	v    T
 	root *Node[T]
 }
 
 func (t *Tree[T]) Add(v T) {
-	t.root = t.root.Add(t.f, v)
+	t.root = t.root.Add(v)
 }
 
 func (t *Tree[T]) Contains(v T) bool {
-	return t.root.Contains(t.f, v)
+	return t.root.Contains(v)
 }
 
-type Node[T any] struct {
+type Node[T cmp.Ordered] struct {
 	val         T
 	left, right *Node[T]
 }
 
-func (n *Node[T]) Add(f OrderableFunc[T], v T) *Node[T] {
+func (n *Node[T]) Add(v T) *Node[T] {
 	if n == nil {
 		return &Node[T]{val: v}
 	}
-	r := f(v, n.val)
-	if r <= -1 {
-		n.left = n.left.Add(f, v)
+	t := cmp.Compare(v, n.val)
+	if t < 0 {
+		n.left = n.left.Add(v)
 	}
-	if r >= 1 {
-		n.right = n.right.Add(f, v)
+	if t > 0 {
+		n.right = n.right.Add(v)
 	}
 	return n
 }
 
-func (n *Node[T]) Contains(f OrderableFunc[T], v T) bool {
+func (n *Node[T]) Contains(v T) bool {
 	if n == nil {
 		return false
 	}
-	switch r := f(v, n.val); {
-	case r <= -1:
-		return n.left.Contains(f, v)
-	case r >= 1:
-		return n.right.Contains(f, v)
+	t := cmp.Compare(v, n.val)
+	if t < 0 {
+		return n.left.Contains(v)
+	}
+	if t > 0 {
+		return n.right.Contains(v)
 	}
 	return true
 }
 
-func NewTree[T any](f OrderableFunc[T]) *Tree[T] {
+func NewTree[T cmp.Ordered](v T) *Tree[T] {
 	return &Tree[T]{
-		f: f,
+		v: v,
 	}
-}
-
-func NumericOrderable[T NumericType](a, b T) int {
-	if a < b {
-		return -1
-	}
-	if a > b {
-		return 1
-	}
-	return 0
 }

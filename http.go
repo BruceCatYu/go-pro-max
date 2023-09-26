@@ -51,6 +51,7 @@ func (res *Response) RespJSON(httpCode int, body any) {
 	if err != nil {
 		fmt.Fprintln(*res.w, err)
 	}
+	(*res.w).WriteHeader(httpCode)
 	fmt.Fprintln(*res.w, string(bytes))
 }
 
