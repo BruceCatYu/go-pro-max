@@ -20,6 +20,7 @@ func UnGzip(b []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer r.Close()
 	return io.ReadAll(r)
 }
 
@@ -28,6 +29,7 @@ func UnGzipToJson[T any](v *T, b []byte) (*T, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer r.Close()
 
 	if err := json.NewDecoder(r).Decode(v); err != nil {
 		return nil, err
