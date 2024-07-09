@@ -7,12 +7,15 @@ import (
 )
 
 // FileExists check file exists
-func FileExists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if os.IsNotExist(err) {
-		return false, nil
+func FileExists(path string) (has bool, err error) {
+	has = true
+	if _, err = os.Stat(path); err != nil {
+		has = false
+		if os.IsNotExist(err) {
+			err = nil
+		}
 	}
-	return true, err
+	return
 }
 
 // ClearFile clear text by file path

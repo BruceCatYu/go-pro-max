@@ -4,7 +4,7 @@ enhancement tool for go
 ## INSTALL
 
 ```bash
-go get github.com/2432001677/go-pro-max
+go get github.com/BruceCatYu/go-pro-max
 ```
 
 ## LICENSE
